@@ -21,7 +21,7 @@ const UpdateCoffie = () => {
         console.log(updatdCoffiee);
 
         // send data to the server
-        fetch(` https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/coffiee/${_id}`, {
+        fetch(` https://coffiee-store-api.vercel.app/coffiee/${_id}`, {
             method: "PUT",
             headers: {
                 'content-type': 'application/json'

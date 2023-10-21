@@ -18,7 +18,7 @@ const CoffieeCard = ({ coffiee, coffiees, setCoffiees }) => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result?.isConfirmed) {
-                fetch(` https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/coffiee/${_id}`, {
+                fetch(` https://coffiee-store-api.vercel.app/coffiee/${_id}`, {
                     method: "DELETE"
                 })
                     .then(res => res.json())

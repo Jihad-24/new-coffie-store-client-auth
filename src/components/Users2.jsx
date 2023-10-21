@@ -1,11 +1,26 @@
-import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+// import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const Users = () => {
+const Users2 = () => {
 
-    const loadedUsers = useLoaderData();
-    const [users, setUsers] = useState(loadedUsers);
+    const { isPending, isError, error, data: users } = useQuery({
+        queryKey: ['users'],
+        queryFn: async () => {
+            const res = await fetch('https://coffiee-store-api.vercel.app/user');
+            return res.json();
+        }
+    })
+
+    // const [users, setUsers] = useState([]);
+
+    // useEffect(() => {
+    //     fetch('https://coffiee-store-api.vercel.app/user')
+    //         .then(res => res.json())
+    //         .then(data => {
+    //         setUsers(data)
+    //     })
+    // },[])
 
     const handleDelete = id => {
         console.log(id);
@@ -19,7 +34,7 @@ const Users = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result?.isConfirmed) {
-                fetch(` https://coffiee-store-api.vercel.app/user/${id}`, {
+                fetch(`https://coffiee-store-api.vercel.app/user/${id}`, {
                     method: "DELETE"
                 })
                     .then(res => res?.json())
@@ -30,17 +45,24 @@ const Users = () => {
                                 'User has been deleted.',
                                 'success'
                             )
-                            const remainingUsers = users?.filter(user => user._id !== id);
-                            setUsers(remainingUsers);
+                            // const remainingUsers = users?.filter(user => user._id !== id);
+                            // setUsers(remainingUsers);
                         }
                     })
             }
         })
     }
 
+    if (isPending) {
+        return <span className="loading loading-spinner loading-lg"></span>;
+    }
+    if (isError) {
+        return <p>{error.message}</p>
+    }
+
     return (
         <div>
-            <h2>Users : {loadedUsers.length} </h2>
+            {/* <h2>Users : {loadedUsers.length} </h2> */}
             <div className="overflow-x-auto">
                 <table className="table">
                     {/* head */}
@@ -54,9 +76,9 @@ const Users = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* row 1 */}
+                        {/* rows */}
                         {
-                            users.map((user, index) => <tr key={user._id}>
+                            users?.map((user, index) => <tr key={user._id}>
                                 <th>{index + 1}</th>
                                 <td>{user.email}</td>
                                 <td>{user.lastSignInTime}</td>
@@ -74,4 +96,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default Users2;

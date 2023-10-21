@@ -12,13 +12,18 @@ import SignUp from './SignUp/SignUp.jsx';
 import SignIn from './SignUp/SignIn.jsx';
 import AuthProvider from './providers/AuthProvider.jsx';
 import Users from './components/Users.jsx';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import Users2 from './components/Users2.jsx';
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App></App>,
-    loader: () => fetch(' https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/coffiee')
+    loader: () => fetch('https://coffiee-store-api.vercel.app/coffiee')
   },
   {
     path: '/addCoffie',
@@ -27,7 +32,7 @@ const router = createBrowserRouter([
   {
     path: '/updateCoffie/:id',
     element: <UpdateCoffie></UpdateCoffie>,
-    loader: ({ params }) => fetch(` https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/coffiee/${params.id}`)
+    loader: ({ params }) => fetch(` https://coffiee-store-api.vercel.app/coffiee/${params.id}`)
   },
   {
     path: '/signup',
@@ -40,15 +45,22 @@ const router = createBrowserRouter([
   {
     path: '/users',
     element: <Users></Users>,
-    loader: () => fetch(' https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/user')
+    loader: () => fetch(' https://coffiee-store-api.vercel.app/user')
+  },
+  {
+    path: '/users2',
+    element: <Users2></Users2>,
   },
 ]);
 
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
 )

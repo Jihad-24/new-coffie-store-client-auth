@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import axios from "axios";
 
 const SignIn = () => {
 
@@ -18,18 +19,25 @@ const SignIn = () => {
                     email,
                     lastSignInTime: result?.user?.metadata?.lastSignInTime
                 }
-                // update last logged in database
-                fetch(' https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/user', {
-                    method: "PATCH",
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(user)
-                })
-                    .then(res => res.json())
+
+                // using axios
+                axios.patch(' https://coffiee-store-api.vercel.app/user', user)
                     .then(data => {
-                        console.log(data);
+                        console.log(data.data);
                     })
+
+                // update last logged in database
+                //     fetch(' https://coffiee-store-api.vercel.app/user', {
+                //         method: "PATCH",
+                //         headers: {
+                //             'content-type': 'application/json'
+                //         },
+                //         body: JSON.stringify(user)
+                //     })
+                //         .then(res => res.json())
+                //         .then(data => {
+                //             console.log(data);
+                //         })
             })
             .catch(eror => {
                 console.log(eror.message);

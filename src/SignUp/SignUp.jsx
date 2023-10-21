@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
+import axios from "axios";
 
 const SignUp = () => {
 
@@ -19,19 +20,28 @@ const SignUp = () => {
                 const createdAt = result?.user?.metadata?.creationTime;
                 const user = { email, password, createdAt: createdAt };
 
-                fetch(' https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/user', {
-                    method: "POST",
-                    headers: {
-                        'content-type': 'application/json'
-                    },
-                    body: JSON.stringify(user)
-                })
-                    .then(res => res.json())
+                // using axios
+                axios.post('https://coffiee-store-api.vercel.app/user', user)
                     .then(data => {
-                        if (data.insertedId) {
+                        if (data.data.insertedId) {
                             console.log('User Added in DataBase')
                         }
                     })
+
+                // using fetch
+                //     fetch(' https://coffiee-store-api.vercel.app/user', {
+                //         method: "POST",
+                //         headers: {
+                //             'content-type': 'application/json'
+                //         },
+                //         body: JSON.stringify(user)
+                //     })
+                //         .then(res => res.json())
+                //         .then(data => {
+                //             if (data.insertedId) {
+                //                 console.log('User Added in DataBase')
+                //             }
+                //         })
             })
             .catch(error => {
                 console.log(error.message);

@@ -19,7 +19,7 @@ const AddCoffiee = () => {
         console.log(newCoffiee);
 
         // send data to the server
-        fetch(' https://new-coffie-store-server-6dc0pkweh-jihad-hasans-projects.vercel.app/coffiee', {
+        fetch(' https:/coffiee-store-api.vercel.app/coffiee', {
             method: "POST",
             headers: {
                 'content-type': 'application/json'
